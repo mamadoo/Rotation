@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		#myCanvas {
+			margin-top: 100px;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="myCanvas">
+		Your browser can not support canvas element.
+	</canvas>
+
+	<script type="text/javascript">
+			var canvas = document.getElementById('myCanvas');
+			var context = canvas.getContext('2d');
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight - 200;
+			var centerX = canvas.width / 2;
+			var centerY = canvas.height / 2;
+			var deg = 0;
+	      	var radian = 0;
+			
+			for (var i = 1; i <= 16; i++) {
+				draw(false, 1);
+			}
+			for (var i = 1; i <= 16; i++) {
+				draw(true, -1);
+			}
+			
+			// bool can be true or false
+			// increase can be 1 or -1
+			function draw(bool, increase) {
+				var line_width = [20,10,10,2,5,5,10,10,20,5,2,10,10,2,5,5,5,2,10,10,2,2,5,10,10,20,20,20,20];
+				var lw = Math.floor(Math.random() * 30);
+				var lwidth = line_width[lw];
+				var sAngle = Math.floor(Math.random() * 361) * Math.PI / 180;
+				var eAngle = Math.floor(Math.random() * 180) * Math.PI / 180;
+				var radius = Math.floor(Math.random() * 500) + 300;
+				var rotate = (Math.floor(Math.random() * 10 + 1) / 10) * Math.PI / 180;
+				
+				context.beginPath();
+
+				context.arc(centerX + 200, centerY, radius, sAngle, eAngle, bool);
+
+				
+				context.lineWidth = lwidth;
+				context.strokeStyle = 'maroon';
+				context.stroke();
+
+				var animStart = function () {
+			        sAngle += (rotate * increase);
+			        
+			        context.beginPath();
+			        context.arc(centerX + 200, centerY, radius, sAngle - (0.75 * increase), sAngle, bool);
+			        context.lineWidth=lwidth + 0.5;
+			        context.strokeStyle="#fff";
+			        context.stroke();
+			        context.closePath();
+
+			        context.beginPath();
+			        context.arc(centerX + 200, centerY, radius, sAngle, sAngle + (0.75 * increase), bool);
+			        context.lineWidth=lwidth;
+			        context.strokeStyle="maroon";
+			        context.stroke();
+			        context.closePath();
+			    };
+
+			    setInterval(animStart, 31.25);
+			}
+	</script>
+</body>
+</html>
